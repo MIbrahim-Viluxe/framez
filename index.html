@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrameZ Studio | Cinematic Content Creation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="z-icon.svg">
+</head>
+<body id="bodyMain">
+    <!-- Camera Intro Overlay -->
+    <div id="cameraIntro" class="camera-intro">
+        <div class="camera-intro-hud">
+            <div class="intro-rec"><div class="pulse"></div> REC</div>
+            <div class="intro-focus-box">
+                <div class="fc tl"></div><div class="fc tr"></div><div class="fc bl"></div><div class="fc br"></div>
+            </div>
+            <h2 class="intro-text" id="introSmileText" data-t="smileForCamera">اضحك للكاميرة</h2>
+        </div>
+        <div class="camera-flash" id="cameraFlash"></div>
+        <div class="camera-shutter shutter-top"></div>
+        <div class="camera-shutter shutter-bottom"></div>
+    </div>
+
+    <div class="spotlight" id="spotlight"></div>
+    <canvas id="fg-particles"></canvas>
+
+    <header>
+        <div class="header-inner-wrap">
+            <a href="index.html" class="logo-box">
+                <div class="logo-txt"><span class="name">FrameZ</span><div class="studio-area"><span class="studio">STUDIO</span><div class="rec-pill"><div class="dot"></div><span class="txt">REC</span></div></div></div>
+                <div class="z-frame-box"><span>Z</span></div>
+            </a>
+            <div class="mobile-toggle" onclick="toggleMobileMenu()">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav-links">
+        <a href="index.html" class="home-dock-btn mini-logo">
+            <div class="z-frame-box"><span>Z</span></div>
+        </a>
+        <a href="studios.html" data-t="studios">STUDIOS</a>
+        <a href="index.html#portfolio" data-t="works">WORKS</a>
+        <a href="packages.html" data-t="tiers">TIERS</a>
+        <a href="faq.html" data-t="faq">FAQ</a>
+        <a href="quotation.html" data-t="prices">PRICES</a>
+        <a href="index.html#contact" data-t="contact">CONTACT</a>
+        <a href="#" class="lang-switch" onclick="toggleLang(event)"><span data-t="langBtn">EN</span> <i class="fa-solid fa-globe"></i></a>
+    </nav>
+
+    <main class="hero" id="home">
+        <video id="heroBgVideo" autoplay muted loop playsinline class="hero-bg-video" style="display:none;"></video>
+        <div class="hud-rec"><div class="pulse"></div> REC 00:00:24:12</div>
+        <div class="hud-grid"><div class="grid-line-v v1"></div><div class="grid-line-v v2"></div><div class="grid-line-h h1"></div><div class="grid-line-h h2"></div></div>
+        <div class="lens-flare"></div>
+        <h1 id="heroHeadline">صناعة القصص البصرية الفاخرة</h1>
+        <p id="heroDesc">تحف فنية تستحق الخلود.</p>
+        <a href="#portfolio" class="btn-rec" id="heroBtn"><i class="fa-solid fa-play"></i> <span data-t="worksBtn">أعمالنا</span></a>
+    </main>
+
+    <section id="portfolio" class="sec-padding">
+        <div class="section-header">
+            <div class="header-inner">
+                <span class="sub-label" data-t="worksTag">معرض الأعمال</span>
+                <h2 data-t="portfolio">أعمالنا الإبداعية</h2>
+            </div>
+            <p class="section-desc" data-t="worksDesc">استعرض مجموعتنا المتنوعة من الفيديوهات المقسمة حسب نوع المحتوى.</p>
+        </div>
+        <div class="portfolio-sliders-wrapper">
+            <!-- Vertical Videos Strip -->
+            <div class="portfolio-slider-container">
+                <h3 class="slider-title" data-t="verticalWorks">الأعمال الطولية (Reels/Shorts)</h3>
+                <div class="works-slider vertical-slider" id="verticalWorksSlider">
+                    <!-- Javascript injects vertical works here -->
+                </div>
+            </div>
+
+            <!-- Horizontal Videos Strip -->
+            <div class="portfolio-slider-container">
+                <h3 class="slider-title" data-t="horizontalWorks">الأعمال العرضية (Cinematic)</h3>
+                <div class="works-slider horizontal-slider" id="horizontalWorksSlider">
+                    <!-- Javascript injects horizontal works here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="celebrities" class="sec-padding">
+        <div class="section-header clickable-header" onclick="toggleCeleb()">
+            <div class="header-inner">
+                <span class="sub-label" data-t="celebTag">TRUSTED BY THE BEST</span>
+                <h2><span data-t="celebTitle">مشاهير فريمز</span> <i class="fa-solid fa-chevron-down toggle-arrow"></i></h2>
+            </div>
+            <p class="section-desc" data-t="celebDesc">النجوم المبدعين الذين وثقوا في رؤيتنا السينمائية وعدستنا الاحترافية.</p>
+        </div>
+        <div class="celebrities-container collapsible-grid" id="celebHomeGrid">
+            <!-- Dynamic celebrities will be injected here -->
+        </div>
+    </section>
+
+    <section id="makingof" class="sec-padding">
+        <div class="section-header">
+            <div class="header-inner">
+                <span class="sub-label" data-t="btsTag">وراء الكواليس</span>
+                <h2 data-t="makingTitle">كواليس العمل</h2>
+            </div>
+            <p class="section-desc" data-t="btsDesc">نظرة حصرية داخل مواقع التصوير وكيف نصنع هذه التحف الفنية.</p>
+        </div>
+        <div class="portfolio-sliders-wrapper">
+            <!-- Vertical BTS Strip -->
+            <div class="portfolio-slider-container">
+                <h3 class="slider-title" data-t="verticalWorks">الأعمال الطولية (Reels/Shorts)</h3>
+                <div class="works-slider vertical-slider" id="verticalBtsSlider">
+                    <!-- Javascript injects vertical bts here -->
+                </div>
+            </div>
+
+            <!-- Horizontal BTS Strip -->
+            <div class="portfolio-slider-container">
+                <h3 class="slider-title" data-t="horizontalWorks">الأعمال العرضية (Cinematic)</h3>
+                <div class="works-slider horizontal-slider" id="horizontalBtsSlider">
+                    <!-- Javascript injects horizontal bts here -->
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="tiers" class="sec-padding" style="background: rgba(229, 169, 61, 0.02);">
+        <div class="section-header clickable-header" onclick="toggleTiers()">
+            <div class="header-inner">
+                <span class="sub-label" data-t="tiersTag">الباقة المتوفرة</span>
+                <h2><span data-t="selectTier">CHOOSE YOUR TIER</span> <i class="fa-solid fa-chevron-down toggle-arrow"></i></h2>
+            </div>
+            <p class="section-desc" data-t="tiersDesc">اختر الباقة الأنسب لمشروعك واصنع الاستثناء.</p>
+        </div>
+        <div class="tiers-grid collapsible-grid" id="homeTiersGrid">
+            <!-- Dynamic tiers here -->
+        </div>
+    </section>
+
+    <section id="contact" class="sec-padding">
+        <div class="section-header clickable-header" onclick="toggleContact()">
+            <div class="header-inner">
+                <span class="sub-label" data-t="contactTag">خدمة العملاء</span>
+                <h2><span data-t="getInTouch">تواصل معنا</span> <i class="fa-solid fa-chevron-down toggle-arrow"></i></h2>
+            </div>
+            <p class="section-desc" data-t="contactDesc">نحن هنا لتحويل أفكارك إلى واقع سينمائي مذهل.</p>
+        </div>
+        <div class="contact-grid-premium collapsible-grid" id="homeContactGrid">
+            <!-- Form Card -->
+            <div class="contact-card-premium form-card">
+                <h3 class="contact-title" data-t="quickMessage">أرسل لنا رسالة سريعة</h3>
+                <form id="contactForm">
+                    <div class="input-wrap">
+                        <label data-t="fullNameLabel">الاسم بالكامل</label>
+                        <div class="input-inner">
+                            <input type="text" name="name" placeholder="أدخل اسمك" required>
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="input-wrap">
+                        <label data-t="emailLabel">البريد الإلكتروني</label>
+                        <div class="input-inner">
+                            <input type="email" name="email" placeholder="أدخل بريدك" required>
+                            <i class="fa-solid fa-at"></i>
+                        </div>
+                    </div>
+                    <div class="input-wrap">
+                        <label data-t="messageLabel">رسالتك</label>
+                        <div class="input-inner">
+                            <textarea name="message" placeholder="كيف يمكننا مساعدتك؟" rows="3" required></textarea>
+                            <i class="fa-solid fa-comment-dots"></i>
+                        </div>
+                    </div>
+                    <button type="submit" class="contact-submit-btn">
+                        <span data-t="sendWaText">إرسال عبر واتساب</span> <i class="fa-brands fa-whatsapp"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Info Card -->
+            <div class="contact-card-premium info-card">
+                <h3 class="contact-title color-primary" data-t="contactInfoTitle">معلومات التواصل</h3>
+                <div class="info-list" id="dynamicContactInfo">
+                    <!-- Javascript injects location, email, phone -->
+                </div>
+                <div class="info-buttons" id="dynamicContactBtns">
+                    <!-- Javascript injects WhatsApp & Email buttons -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faqHome" class="sec-padding" style="background: rgba(0,0,0,0.2);">
+        <div class="section-header">
+            <div class="header-inner">
+                <span class="sub-label">Q&A</span>
+                <h2 data-t="faqHomeTitle">أهم الأسئلة</h2>
+            </div>
+            <p class="section-desc" data-t="faqHomeDesc">إجابات سريعة على أهم استفساراتكم.</p>
+        </div>
+        <div class="faq-container" id="faqHomeGrid">
+            <!-- Dynamic featured FAQs here -->
+        </div>
+        <div style="text-align:center; margin-top:40px;">
+            <a href="faq.html" class="btn-rec" style="background:transparent; border:1px solid var(--gold); color: var(--gold); font-size: 0.9rem; padding: 12px 25px;">
+                <span data-t="allFaqs">عرض كافة الأسئلة</span> <i class="fa-solid fa-arrow-left"></i>
+            </a>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-cta">
+            <h2 data-t="footerCtaTitle">لنصنع عملاً مبهراً معاً</h2>
+            <p data-t="footerCtaDesc">احجز جلستك الآن ودعنا نروي قصتك السينمائية.</p>
+            <a href="#contact" class="contact-cta dynamic-wa" data-t="footerBookBtn">احجز الآن</a>
+        </div>
+        <div class="footer-line"></div>
+        <div class="footer-socials">
+            <a href="https://www.facebook.com/profile.php?id=61550587972794&locale=ar_AR" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://www.instagram.com/framez_studio_eg/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+        <p class="copyright" data-t="copyright">جميع الحقوق محفوظة لصالح FrameZ Studio &copy; 2026</p>
+    </footer>
+
+    <!-- Video Modal Player -->
+    <div id="videoModal" class="video-modal" onclick="closeVideo(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-modal" aria-label="Close" onclick="closeVideo(event)"><i class="fa-solid fa-xmark"></i></button>
+            <div id="videoContainer" class="video-container-inner"></div>
+            <div id="modalFooter" class="modal-footer"></div>
+        </div>
+    </div>
+
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/201117590119" class="whatsapp-float dynamic-wa" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- AI Chatbot Interface -->
+    <div id="chatBubble" class="chat-bubble" onclick="toggleChat()">
+        <i class="fa-solid fa-comment-dots"></i>
+        <div class="status-pulse"></div>
+    </div>
+
+    <div id="chatWindow" class="chat-window">
+        <div class="chat-header">
+            <div class="ai-info">
+                <div class="ai-avatar">FZ</div>
+                <div class="ai-name">
+                    <span data-t="aiName">مساعد FrameZ الذكي</span>
+                    <span class="online-tag">متصل الآن</span>
+                </div>
+            </div>
+            <button class="close-chat" onclick="toggleChat()"><i class="fa-solid fa-minus"></i></button>
+        </div>
+        <div id="chatBody" class="chat-body">
+            <div class="msg ai-msg">
+                <p data-t="aiWelcome">أهلاً بك في FrameZ Studio! أنا مساعدك الذكي، كيف يمكنني مساعدتك في مشروعك السينمائي القادم؟</p>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter') sendChat()">
+            <button onclick="sendChat()" id="chatSendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

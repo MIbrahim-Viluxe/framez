@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrameZ Studio | FAQ - الأسئلة الشائعة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="z-icon.svg">
+</head>
+<body id="bodyFAQ">
+    <div class="spotlight" id="spotlight"></div>
+    <canvas id="fg-particles"></canvas>
+
+    <header>
+        <div class="header-inner-wrap">
+            <a href="index.html" class="logo-box">
+                <div class="logo-txt"><span class="name">FrameZ</span><div class="studio-area"><span class="studio">STUDIO</span><div class="rec-pill"><div class="dot"></div><span class="txt">REC</span></div></div></div>
+                <div class="z-frame-box"><span>Z</span></div>
+            </a>
+            <div class="mobile-toggle" onclick="toggleMobileMenu()">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav-links">
+        <a href="index.html" class="home-dock-btn mini-logo">
+            <div class="z-frame-box"><span>Z</span></div>
+        </a>
+        <a href="studios.html" data-t="studios">STUDIOS</a>
+        <a href="index.html#portfolio" data-t="works">WORKS</a>
+        <a href="packages.html" data-t="tiers">TIERS</a>
+        <a href="faq.html" class="active" data-t="faq">FAQ</a>
+        <a href="quotation.html" data-t="prices">PRICES</a>
+        <a href="index.html#contact" data-t="contact">CONTACT</a>
+        <a href="#" class="lang-switch" onclick="toggleLang(event)"><span data-t="langBtn">EN</span> <i class="fa-solid fa-globe"></i></a>
+    </nav>
+
+    <main class="sub-hero">
+        <div class="sub-hero-overlay"></div>
+        <div class="sub-hero-content">
+            <span class="sub-label">KNOWLEDGE BASE</span>
+            <h1 data-t="faqMainTitle">الإجابات التي تبحث عنها</h1>
+            <p data-t="faqMainDesc">دليلك الكامل لفهم كيفية عملنا وكيف نحول رؤيتك إلى واقع سينمائي.</p>
+        </div>
+    </main>
+
+    <section class="sec-padding">
+        <div class="section-header">
+            <div class="header-inner">
+                <span class="sub-label" data-t="faqTag">الأسئلة الشائعة</span>
+                <h2 data-t="faqTitle">أسئلة يتكرر طرحها</h2>
+            </div>
+            <p class="section-desc" data-t="faqDesc">لقد جمعنا أكثر الاستفسارات شيوعاً لمساعدتك في اتخاذ القرار الأمثل لمشروعك.</p>
+        </div>
+        
+        <div class="faq-container" id="faqAccordion">
+            <!-- Dynamic FAQ items will be injected here from faq_data table -->
+            <div style="text-align:center; padding:50px; opacity:0.5;">جاري تحميل الأسئلة...</div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-cta">
+            <h2 data-t="footerCtaTitle">لديك سؤال آخر؟</h2>
+            <p data-t="footerCtaDesc">تواصل معنا مباشرة عبر واتساب وسيقوم فريقنا بالرد عليك فوراً.</p>
+            <a href="https://wa.me/201117590119" class="dynamic-wa btn-rec" target="_blank">
+                <span data-t="chatWithUs">تحدث معنا الآن</span> <i class="fa-brands fa-whatsapp"></i>
+            </a>
+        </div>
+        <p class="copyright" data-t="copyright">جميع الحقوق محفوظة لصالح FrameZ Studio &copy; 2026</p>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/201117590119" class="whatsapp-float dynamic-wa" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Custom logic for FAQ Accordion
+        window.toggleFAQ = function(id) {
+            const items = document.querySelectorAll('.faq-item');
+            items.forEach(item => {
+                if(item.id === 'faq-' + id) {
+                    item.classList.toggle('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrameZ Studio | Our Studios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="z-icon.svg">
+</head>
+<body id="bodyMain">
+    <div class="spotlight" id="spotlight"></div>
+    <canvas id="fg-particles"></canvas>
+
+    <header>
+        <div class="header-inner-wrap">
+            <a href="index.html" class="logo-box">
+                <div class="logo-txt"><span class="name">FrameZ</span><div class="studio-area"><span class="studio">STUDIO</span><div class="rec-pill"><div class="dot"></div><span class="txt">REC</span></div></div></div>
+                <div class="z-frame-box"><span>Z</span></div>
+            </a>
+            <div class="mobile-toggle" onclick="toggleMobileMenu()">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav-links">
+        <a href="index.html" class="home-dock-btn mini-logo">
+            <div class="z-frame-box"><span>Z</span></div>
+        </a>
+        <a href="studios.html" class="active" data-t="studios">STUDIOS</a>
+        <a href="index.html#portfolio" data-t="works">WORKS</a>
+        <a href="packages.html" data-t="tiers">TIERS</a>
+        <a href="faq.html" data-t="faq">FAQ</a>
+        <a href="quotation.html" data-t="prices">PRICES</a>
+        <a href="index.html#contact" data-t="contact">CONTACT</a>
+        <a href="#" class="lang-switch" onclick="toggleLang(event)"><span data-t="langBtn">EN</span> <i class="fa-solid fa-globe"></i></a>
+    </nav>
+
+    <!-- Margin to offset the fixed header on inner pages -->
+    <div style="height: 120px;"></div>
+
+    <section id="locations" class="locations">
+        <div class="section-header">
+            <div class="header-inner">
+                <span class="sub-label" data-t="studiosTag">مواقع التصوير</span>
+                <h2 data-t="ourStudios">OUR STUDIOS</h2>
+            </div>
+            <p class="section-desc" data-t="studiosDesc">استكشف الكتالوج الخاص بأماكن التصوير المجهزة بالكامل لاستقبال مشروعك.</p>
+        </div>
+        <div class="loc-player-wrapper"><div class="loc-slider" id="locSlider"></div></div>
+    </section>
+
+    <section id="contact" class="sec-padding">
+        <div class="section-header">
+            <div class="header-inner">
+                <span class="sub-label" data-t="contactTag">خدمة العملاء</span>
+                <h2 data-t="getInTouch">CONTACT US</h2>
+            </div>
+            <p class="section-desc" data-t="contactDesc">نحن هنا لتحويل أفكارك إلى واقع سينمائي مذهل.</p>
+        </div>
+        <div class="contact-grid-premium">
+            <!-- Form Card -->
+            <div class="contact-card-premium form-card">
+                <h3 class="contact-title" data-t="quickMessage">أرسل لنا رسالة سريعة</h3>
+                <form id="contactForm">
+                    <div class="input-wrap">
+                        <label data-t="fullNameLabel">الاسم بالكامل</label>
+                        <div class="input-inner">
+                            <input type="text" name="name" placeholder="أدخل اسمك" required>
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="input-wrap">
+                        <label data-t="emailLabel">البريد الإلكتروني</label>
+                        <div class="input-inner">
+                            <input type="email" name="email" placeholder="أدخل بريدك" required>
+                            <i class="fa-solid fa-at"></i>
+                        </div>
+                    </div>
+                    <div class="input-wrap">
+                        <label data-t="messageLabel">رسالتك</label>
+                        <div class="input-inner">
+                            <textarea name="message" placeholder="كيف يمكننا مساعدتك؟" rows="3" required></textarea>
+                            <i class="fa-solid fa-comment-dots"></i>
+                        </div>
+                    </div>
+                    <button type="submit" class="contact-submit-btn">
+                        <span data-t="sendWaText">إرسال عبر واتساب</span> <i class="fa-brands fa-whatsapp"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Info Card -->
+            <div class="contact-card-premium info-card">
+                <h3 class="contact-title color-primary" data-t="contactInfoTitle">معلومات التواصل</h3>
+                <div class="info-list" id="dynamicContactInfo">
+                    <!-- Javascript injects location, email, phone -->
+                </div>
+                <div class="info-buttons" id="dynamicContactBtns">
+                    <!-- Javascript injects WhatsApp & Email buttons -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-cta">
+            <h2 data-t="footerCtaTitle">لنصنع عملاً مبهراً معاً</h2>
+            <p data-t="footerCtaDesc">احجز جلستك الآن ودعنا نروي قصتك السينمائية.</p>
+            <a href="#contact" class="contact-cta dynamic-wa" data-t="footerBookBtn">احجز الآن</a>
+        </div>
+        <div class="footer-line"></div>
+        <div class="footer-socials">
+            <a href="https://www.facebook.com/profile.php?id=61550587972794&locale=ar_AR" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://www.instagram.com/framez_studio_eg/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+        <p class="copyright" data-t="copyright">جميع الحقوق محفوظة لصالح FrameZ Studio &copy; 2026</p>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/201117590119" class="whatsapp-float dynamic-wa" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
