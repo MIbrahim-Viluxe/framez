@@ -11,20 +11,6 @@
     <link rel="icon" type="image/svg+xml" href="z-icon.svg">
 </head>
 <body id="bodyMain">
-    <!-- Camera Intro Overlay -->
-    <div id="cameraIntro" class="camera-intro">
-        <div class="camera-intro-hud">
-            <div class="intro-rec"><div class="pulse"></div> REC</div>
-            <div class="intro-focus-box">
-                <div class="fc tl"></div><div class="fc tr"></div><div class="fc bl"></div><div class="fc br"></div>
-            </div>
-            <h2 class="intro-text" id="introSmileText" data-t="smileForCamera">اضحك للكاميرة</h2>
-        </div>
-        <div class="camera-flash" id="cameraFlash"></div>
-        <div class="camera-shutter shutter-top"></div>
-        <div class="camera-shutter shutter-bottom"></div>
-    </div>
-
     <div class="spotlight" id="spotlight"></div>
     <canvas id="fg-particles"></canvas>
 
@@ -91,14 +77,17 @@
     </section>
 
     <section id="celebrities" class="sec-padding">
-        <div class="section-header clickable-header" onclick="toggleCeleb()">
-            <div class="header-inner">
-                <span class="sub-label" data-t="celebTag">TRUSTED BY THE BEST</span>
-                <h2><span data-t="celebTitle">مشاهير فريمز</span> <i class="fa-solid fa-chevron-down toggle-arrow"></i></h2>
+        <div class="section-header" onclick="toggleCelebrities()" style="cursor: pointer;">
+            <div class="header-inner" style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                <div>
+                    <span class="sub-label" data-t="celebTag">TRUSTED BY THE BEST</span>
+                    <h2 data-t="celebTitle" style="margin-bottom:0;">مشاهير فريمز</h2>
+                </div>
+                <i id="celebToggleIcon" class="fa-solid fa-chevron-down" style="font-size: 1.8rem; color: var(--gold); transition: transform 0.3s ease;"></i>
             </div>
-            <p class="section-desc" data-t="celebDesc">النجوم المبدعين الذين وثقوا في رؤيتنا السينمائية وعدستنا الاحترافية.</p>
+            <p class="section-desc" data-t="celebDesc" style="margin-top: 15px;">النجوم المبدعين الذين وثقوا في رؤيتنا السينمائية وعدستنا الاحترافية.</p>
         </div>
-        <div class="celebrities-container collapsible-grid" id="celebHomeGrid">
+        <div class="celebrities-container" id="celebHomeGrid" style="display: none; opacity: 0; transition: opacity 0.4s ease; margin-top: 20px;">
             <!-- Dynamic celebrities will be injected here -->
         </div>
     </section>
@@ -112,46 +101,45 @@
             <p class="section-desc" data-t="btsDesc">نظرة حصرية داخل مواقع التصوير وكيف نصنع هذه التحف الفنية.</p>
         </div>
         <div class="portfolio-sliders-wrapper">
-            <!-- Vertical BTS Strip -->
-            <div class="portfolio-slider-container">
-                <h3 class="slider-title" data-t="verticalWorks">الأعمال الطولية (Reels/Shorts)</h3>
-                <div class="works-slider vertical-slider" id="verticalBtsSlider">
-                    <!-- Javascript injects vertical bts here -->
-                </div>
+            <div class="portfolio-slider-container" style="display: none;">
+                <h3 class="slider-title" data-t="verticalBts">كواليس طولية (Behind the Reels)</h3>
+                <div class="works-slider vertical-slider" id="btsVerticalSlider"></div>
             </div>
-
-            <!-- Horizontal BTS Strip -->
-            <div class="portfolio-slider-container">
-                <h3 class="slider-title" data-t="horizontalWorks">الأعمال العرضية (Cinematic)</h3>
-                <div class="works-slider horizontal-slider" id="horizontalBtsSlider">
-                    <!-- Javascript injects horizontal bts here -->
-                </div>
+            <div class="portfolio-slider-container" style="display: none;">
+                <h3 class="slider-title" data-t="horizontalBts">كواليس عرضية (Behind the Scenes)</h3>
+                <div class="works-slider horizontal-slider" id="btsHorizontalSlider"></div>
             </div>
         </div>
     </section>
     
     <section id="tiers" class="sec-padding" style="background: rgba(229, 169, 61, 0.02);">
-        <div class="section-header clickable-header" onclick="toggleTiers()">
-            <div class="header-inner">
-                <span class="sub-label" data-t="tiersTag">الباقة المتوفرة</span>
-                <h2><span data-t="selectTier">CHOOSE YOUR TIER</span> <i class="fa-solid fa-chevron-down toggle-arrow"></i></h2>
+        <div class="section-header" onclick="togglePackagesList()" style="cursor: pointer;">
+            <div class="header-inner" style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                <div>
+                    <span class="sub-label" data-t="tiersTag">الباقة المتوفرة</span>
+                    <h2 data-t="selectTier" style="margin-bottom:0;">CHOOSE YOUR TIER</h2>
+                </div>
+                <i id="packagesToggleIcon" class="fa-solid fa-chevron-down" style="font-size: 1.8rem; color: var(--gold); transition: transform 0.3s ease;"></i>
             </div>
-            <p class="section-desc" data-t="tiersDesc">اختر الباقة الأنسب لمشروعك واصنع الاستثناء.</p>
+            <p class="section-desc" data-t="tiersDesc" style="margin-top: 15px;">اختر الباقة الأنسب لمشروعك واصنع الاستثناء.</p>
         </div>
-        <div class="tiers-grid collapsible-grid" id="homeTiersGrid">
+        <div class="tiers-grid" id="homeTiersGrid" style="display: none; opacity: 0; transition: opacity 0.4s ease; margin-top: 20px;">
             <!-- Dynamic tiers here -->
         </div>
     </section>
 
     <section id="contact" class="sec-padding">
-        <div class="section-header clickable-header" onclick="toggleContact()">
-            <div class="header-inner">
-                <span class="sub-label" data-t="contactTag">خدمة العملاء</span>
-                <h2><span data-t="getInTouch">تواصل معنا</span> <i class="fa-solid fa-chevron-down toggle-arrow"></i></h2>
+        <div class="section-header" onclick="toggleContact()" style="cursor: pointer;">
+            <div class="header-inner" style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                <div>
+                    <span class="sub-label" data-t="contactTag">خدمة العملاء</span>
+                    <h2 data-t="getInTouch" style="margin-bottom:0;">تواصل معنا</h2>
+                </div>
+                <i id="contactToggleIcon" class="fa-solid fa-chevron-down" style="font-size: 1.8rem; color: var(--gold); transition: transform 0.3s ease;"></i>
             </div>
-            <p class="section-desc" data-t="contactDesc">نحن هنا لتحويل أفكارك إلى واقع سينمائي مذهل.</p>
+            <p class="section-desc" data-t="contactDesc" style="margin-top: 15px;">نحن هنا لتحويل أفكارك إلى واقع سينمائي مذهل.</p>
         </div>
-        <div class="contact-grid-premium collapsible-grid" id="homeContactGrid">
+        <div class="contact-grid-premium" id="contactContent" style="display: none; opacity: 0; transition: opacity 0.4s ease; margin-top: 20px;">
             <!-- Form Card -->
             <div class="contact-card-premium form-card">
                 <h3 class="contact-title" data-t="quickMessage">أرسل لنا رسالة سريعة</h3>
@@ -197,20 +185,25 @@
     </section>
 
     <section id="faqHome" class="sec-padding" style="background: rgba(0,0,0,0.2);">
-        <div class="section-header">
-            <div class="header-inner">
-                <span class="sub-label">Q&A</span>
-                <h2 data-t="faqHomeTitle">أهم الأسئلة</h2>
+        <div class="section-header" onclick="toggleFAQSection()" style="cursor: pointer;">
+            <div class="header-inner" style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                <div>
+                    <span class="sub-label">Q&A</span>
+                    <h2 data-t="faqHomeTitle" style="margin-bottom:0;">أهم الأسئلة</h2>
+                </div>
+                <i id="faqToggleIcon" class="fa-solid fa-chevron-down" style="font-size: 1.8rem; color: var(--gold); transition: transform 0.3s ease;"></i>
             </div>
-            <p class="section-desc" data-t="faqHomeDesc">إجابات سريعة على أهم استفساراتكم.</p>
+            <p class="section-desc" data-t="faqHomeDesc" style="margin-top: 15px;">إجابات سريعة على أهم استفساراتكم.</p>
         </div>
-        <div class="faq-container" id="faqHomeGrid">
-            <!-- Dynamic featured FAQs here -->
-        </div>
-        <div style="text-align:center; margin-top:40px;">
-            <a href="faq.html" class="btn-rec" style="background:transparent; border:1px solid var(--gold); color: var(--gold); font-size: 0.9rem; padding: 12px 25px;">
-                <span data-t="allFaqs">عرض كافة الأسئلة</span> <i class="fa-solid fa-arrow-left"></i>
-            </a>
+        <div id="faqContent" style="display: none; opacity: 0; transition: opacity 0.4s ease; margin-top: 20px;">
+            <div class="faq-container" id="faqHomeGrid">
+                <!-- Dynamic featured FAQs here -->
+            </div>
+            <div style="text-align:center; margin-top:40px;">
+                <a href="faq.html" class="btn-rec" style="background:transparent; border:1px solid var(--gold); color: var(--gold); font-size: 0.9rem; padding: 12px 25px;">
+                    <span data-t="allFaqs">عرض كافة الأسئلة</span> <i class="fa-solid fa-arrow-left"></i>
+                </a>
+            </div>
         </div>
     </section>
 

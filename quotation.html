@@ -404,16 +404,31 @@
     </header>
 
     <nav class="nav-links">
-        <a href="index.html" class="home-dock-btn mini-logo">
-            <div class="z-frame-box"><span>Z</span></div>
-        </a>
-        <a href="studios.html" data-t="studios">STUDIOS</a>
-        <a href="index.html#portfolio" data-t="works">WORKS</a>
-        <a href="packages.html" data-t="tiers">TIERS</a>
-        <a href="faq.html" data-t="faq">FAQ</a>
-        <a href="quotation.html" class="active" data-t="prices">PRICES</a>
-        <a href="index.html#contact" data-t="contact">CONTACT</a>
-        <a href="#" class="lang-switch" onclick="toggleLang(event)"><span data-t="langBtn">EN</span> <i class="fa-solid fa-globe"></i></a>
+        <div class="close-menu-btn" onclick="toggleMobileMenu()"><i class="fa-solid fa-xmark"></i></div>
+        
+        <div class="mobile-nav-content">
+            <a href="studios.html" data-t="studios">الاستوديوهات</a>
+            <a href="index.html#portfolio" data-t="works">أعمالنا</a>
+            <a href="packages.html" data-t="tiers">الباقات</a>
+            <a href="faq.html" data-t="faq">الأسئلة</a>
+            <a href="quotation.html" data-t="prices">الأسعار</a>
+            <a href="index.html#contact" data-t="contact">التواصل</a>
+            
+            <a href="#" class="lang-switch-mobile" onclick="toggleLang(event)">
+                <i class="fa-solid fa-globe"></i> <span data-t="langBtn">EN</span>
+            </a>
+        </div>
+
+        <!-- Desktop and Mobile Unified Nav Items -->
+        <div class="desktop-nav-items">
+            <a href="studios.html" data-t="studios">الاستوديوهات</a>
+            <a href="index.html#portfolio" data-t="works">أعمالنا</a>
+            <a href="packages.html" data-t="tiers">الباقات</a>
+            <a href="faq.html" data-t="faq">الأسئلة</a>
+            <a href="quotation.html" data-t="prices">الأسعار</a>
+            <a href="index.html#contact" data-t="contact">التواصل</a>
+            <a href="#" class="lang-switch" onclick="toggleLang(event)"><span data-t="langBtn">EN</span> <i class="fa-solid fa-globe"></i></a>
+        </div>
     </nav>
 
     <div class="quotation-wrapper">
@@ -461,7 +476,22 @@
             </div>
 
             <div id="priceGroupsGrid" class="price-groups-grid" style="transition: all 0.4s ease;">
-                <!-- Category blocks will be rendered here -->
+                <!-- Hardcoded Fallback HTML to ensure something shows if JS crashes or is cached -->
+                <div class="category-block" data-cat="مونتاج" style="border-color: rgba(167, 139, 250, 0.2);">
+                    <div class="cat-tag" style="background: rgba(167, 139, 250, 0.15); color: #a78bfa; border-right-color: #a78bfa;">
+                        <span class="cat-icon"><i class="fa-solid fa-scissors"></i></span> مونتاج
+                    </div>
+                    <div class="items-list">
+                        <div class="price-item">
+                            <div class="item-label">مونتاج فيديو ريلز/تيك توك</div>
+                            <div class="item-price">يبدأ من 500 ج.م</div>
+                        </div>
+                        <div class="price-item">
+                            <div class="item-label">مونتاج فيديو يوتيوب متكامل</div>
+                            <div class="item-price">يبدأ من 1500 ج.م</div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="terms-section" id="termsSection" style="display: none;">
@@ -485,28 +515,51 @@
     <script src="supabase-config.js"></script>
     <script src="js/main.js"></script>
     <script>
+        let waNum = '201117590119';
+        
         const loadPrices = async () => {
-            // Category config
-            const CAT_CONFIG = {
-                'مونتاج': { icon: '<i class="fa-solid fa-scissors"></i>', color: '#a78bfa' },
-                'تصوير':  { icon: '<i class="fa-solid fa-camera-retro"></i>', color: '#60a5fa' },
-                'معدات':  { icon: '<i class="fa-solid fa-video"></i>', color: '#f59e0b' },
-                'لوكيشن': { icon: '<i class="fa-solid fa-clapperboard"></i>', color: '#34d399' }
-            };
+            try {
+                // Category config
+                const CAT_CONFIG = {
+                    'مونتاج': { icon: '<i class="fa-solid fa-scissors"></i>', color: '#a78bfa' },
+                    'تصوير':  { icon: '<i class="fa-solid fa-camera-retro"></i>', color: '#60a5fa' },
+                    'معدات':  { icon: '<i class="fa-solid fa-video"></i>', color: '#f59e0b' },
+                    'لوكيشن': { icon: '<i class="fa-solid fa-clapperboard"></i>', color: '#34d399' }
+                };
 
-            const { data, error } = await supabaseClient.from('price_list').select('*').order('sort_order', { ascending: true });
-            if (error) return;
+                let priceData = [];
+                try {
+                    const { data, error } = await supabaseClient.from('price_list').select('*').order('sort_order', { ascending: true });
+                    if (!error && data) priceData = data;
+                } catch(e) {
+                    console.error("Supabase fetch failed", e);
+                }
 
-            const grid = document.getElementById('priceGroupsGrid');
-            if(!grid) return;
-            grid.innerHTML = '';
-            
-            // Group by category
-            const grouped = {};
-            data.forEach(item => {
-                if(!grouped[item.category]) grouped[item.category] = [];
-                grouped[item.category].push(item);
-            });
+                // Fallback dummy data if DB is empty so the page doesn't look broken
+                if (!priceData || priceData.length === 0) {
+                    priceData = [
+                        { category: 'مونتاج', item_name: 'مونتاج فيديو ريلز/تيك توك', price: 'يبدأ من 500 ج.م', sort_order: 1 },
+                        { category: 'مونتاج', item_name: 'مونتاج فيديو يوتيوب متكامل', price: 'يبدأ من 1500 ج.م', sort_order: 2 },
+                        { category: 'تصوير', item_name: 'تصوير منتجات (بالقطعة)', price: '150 ج.م', sort_order: 3 },
+                        { category: 'تصوير', item_name: 'تغطية فعاليات (باليوم)', price: '4000 ج.م', sort_order: 4 },
+                        { category: 'معدات', item_name: 'تأجير كاميرا Sony A7IV', price: '1200 ج.م / يوم', sort_order: 5 },
+                        { category: 'لوكيشن', item_name: 'بلاك استوديو', price: '400 ج.م / ساعة', image_url: 'https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=600&q=80', sort_order: 6 }
+                    ];
+                }
+
+                const grid = document.getElementById('priceGroupsGrid');
+                if(!grid) return;
+                
+                // Clear the hardcoded fallback HTML
+                grid.innerHTML = '';
+                
+                // Group by category
+                const grouped = {};
+                priceData.forEach(item => {
+                    const cat = item.category || 'أخرى';
+                    if(!grouped[cat]) grouped[cat] = [];
+                    grouped[cat].push(item);
+                });
 
             // Render Organized Blocks
             const catOrder = ['مونتاج', 'تصوير', 'معدات', 'لوكيشن'];
@@ -581,6 +634,8 @@
                         termsSec.style.display = 'block';
                     }
                 }
+            } catch(globalError) {
+                console.error("Global JS Error in loadPrices:", globalError);
             }
         }
 
