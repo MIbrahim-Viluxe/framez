@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrameZ Studio | Digital Quotation - عروض الأسعار</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="z-icon.svg">
+    <style>
+        :root {
+            --gold: #e5a93d;
+            --gold-glow: rgba(229, 169, 61, 0.4);
+            --glass-bg: rgba(10, 10, 10, 0.8);
+            --glass-border: rgba(229, 169, 61, 0.2);
+        }
+        /* Removed .top-nav conflicts */
+        .top-nav { display: none !important; }
+        
+        body { 
+            background: #000; 
+            overflow-x: hidden; 
+            min-height: 100vh;
+            display: block; /* Changed from flex to allow header positioning */
+        }
+        .digital-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(229,169,61,0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(229,169,61,0.08) 0%, transparent 40%),
+                #000;
+            z-index: -1;
+        }
+        
+        .quotation-wrapper {
+            width: 100%;
+            max-width: 1100px; 
+            margin: 40px auto; 
+            padding: 20px;
+            animation: pageEnter 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes pageEnter {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); filter: blur(20px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+
+        .price-board {
+            background: var(--glass-bg); 
+            color: #fff; 
+            padding: 50px; 
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            box-shadow: 
+                0 40px 100px rgba(0,0,0,0.8), 
+                0 0 40px rgba(229,169,61,0.05);
+            position: relative; 
+            overflow: hidden;
+        }
+
+        .price-board::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 5px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .board-header {
+            border-bottom: 1px solid var(--glass-border); 
+            padding-bottom: 30px; 
+            margin-bottom: 40px;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+        }
+
+        .board-logo { height: 70px; filter: drop-shadow(0 0 10px var(--gold-glow)); }
+        .board-info { text-align: left; font-size: 0.8rem; color: #aaa; font-family: 'Alexandria', sans-serif; line-height: 1.6; }
+        .board-info strong { color: var(--gold); font-size: 1.1rem; }
+
+        /* The New Organized Grid Layout */
+        .price-groups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .category-block {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .category-block:hover { border-color: rgba(229, 169, 61, 0.3); background: rgba(255, 255, 255, 0.04); }
+
+        .cat-tag {
+            background: rgba(229, 169, 61, 0.1); 
+            color: var(--gold); 
+            display: inline-flex; 
+            align-items: center;
+            gap: 8px;
+            padding: 6px 18px;
+            border-radius: 6px; 
+            font-weight: 900; 
+            font-size: 1rem; 
+            align-self: flex-start;
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            border-right: 3px solid var(--gold);
+            margin-bottom: 10px;
+        }
+        .cat-tag .cat-icon { font-size: 1.1rem; }
+
+        /* New Visual Card Style for Media Items */
+        .price-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            margin-bottom: 15px;
+        }
+        .price-card:hover { 
+            transform: translateY(-5px);
+            border-color: rgba(229, 169, 61, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .price-card-img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .price-card-info {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+        .price-card-label { font-weight: 700; color: #fff; font-size: 1rem; }
+        .price-card-val { font-weight: 900; color: var(--gold); font-size: 1.1rem; }
+
+        .price-item {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 14px 10px; 
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 0.95rem;
+            transition: 0.3s;
+            border-radius: 8px;
+            gap: 20px;
+        }
+        .price-item:last-child { border-bottom: none; }
+        .price-item:hover { background: rgba(229, 169, 61, 0.05); }
+
+        .item-label { font-weight: 400; color: #eee; flex: 1; text-align: right; line-height: 1.6; }
+        .item-price { font-weight: 900; color: var(--gold); font-size: 1rem; text-align: left; margin-top: 2px; }
+
+        .digital-footer {
+            margin-top: 40px; 
+            padding-top: 40px; 
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+        }
+
+        .book-btn-float {
+            background: var(--gold); 
+            color: #000; 
+            padding: 16px 45px; 
+            border-radius: 50px;
+            display: inline-flex; 
+            align-items: center;
+            gap: 12px;
+            font-weight: 900; 
+            margin-top: 25px; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(229, 169, 61, 0.3);
+        }
+        .book-btn-float:hover { 
+            transform: scale(1.05) translateY(-5px); 
+            box-shadow: 0 20px 40px rgba(229, 169, 61, 0.5); 
+            background: #fff;
+        }
+
+        .terms-section {
+            margin-top: 50px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            text-align: right;
+        }
+        .terms-title { color: var(--gold); font-weight: 900; margin-bottom: 10px; font-size: 0.9rem; letter-spacing: 1px; }
+        .terms-list { font-size: 0.75rem; color: #777; line-height: 1.8; list-style: none; }
+        .terms-list li::before { content: '•'; color: var(--gold); margin-left: 8px; }
+
+        /* Liquid WhatsApp Icon Effect */
+        .wa-liquid-btn {
+            position: relative;
+            width: 70px; height: 70px;
+            background: rgba(37, 211, 102, 0.1);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            border: 2px solid rgba(37, 211, 102, 0.3);
+            cursor: pointer;
+            transition: 0.5s;
+        }
+        .wa-liquid-btn i { font-size: 2.2rem; color: #fff; z-index: 5; position: relative; }
+        .wa-liquid-btn .liquid-wave {
+            position: absolute;
+            top: 100%; left: 50%; width: 200%; height: 200%;
+            background: #25d366;
+            border-radius: 40%;
+            transform: translate(-50%, -50%) rotate(0deg);
+            animation: liquidFill 8s linear infinite forwards;
+            z-index: 1;
+        }
+        @keyframes liquidFill {
+            0% { top: 110%; transform: translate(-50%, -50%) rotate(0deg); }
+            50% { top: 50%; transform: translate(-50%, -50%) rotate(180deg); }
+            100% { top:-10%; transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        .wa-liquid-btn:hover { border-color: #fff; transform: scale(1.1); box-shadow: 0 0 30px rgba(37,211,102,0.5); }
+
+        /* ========================
+           Filter Tabs
+        ======================== */
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        .filter-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 22px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            color: #aaa;
+            font-family: 'Alexandria', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: currentColor;
+            opacity: 0;
+            transition: 0.3s;
+        }
+        .filter-btn:hover {
+            border-color: currentColor;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+        .filter-btn.active {
+            color: #000;
+            border-color: transparent;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+        .filter-btn[data-cat="all"].active  { background: var(--gold); }
+        .filter-btn[data-cat="مونتاج"].active { background: #a78bfa; box-shadow: 0 8px 25px rgba(167,139,250,0.4); }
+        .filter-btn[data-cat="تصوير"].active  { background: #60a5fa; box-shadow: 0 8px 25px rgba(96,165,250,0.4); }
+        .filter-btn[data-cat="معدات"].active  { background: #f59e0b; box-shadow: 0 8px 25px rgba(245,158,11,0.4); }
+        .filter-btn[data-cat="لوكيشن"].active { background: #34d399; box-shadow: 0 8px 25px rgba(52,211,153,0.4); }
+        .filter-btn .f-icon,
+        .filter-btn i.f-icon { 
+            font-size: 0.95rem; 
+            color: inherit;
+            transition: transform 0.3s;
+        }
+        .filter-btn:hover i.f-icon,
+        .filter-btn.active i.f-icon { transform: scale(1.2); }
+
+        /* Category block hidden state */
+        .category-block.hidden {
+            display: none;
+        }
+        .category-block {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @media (max-width: 600px) {
+            .price-board { padding: 30px 15px; width: 95%; margin: 80px auto 30px; border-radius: 20px; }
+            .board-header { flex-direction: column; gap: 15px; text-align: center; }
+            .board-info { text-align: center; font-size: 0.7rem; }
+            .price-groups-grid { grid-template-columns: 1fr; gap: 20px; }
+            .category-block { padding: 15px; }
+            .cat-tag { font-size: 0.85rem; padding: 4px 12px; }
+            .price-item { font-size: 0.85rem; padding: 10px 5px; }
+            .item-price { font-size: 1rem; }
+        }
+
+        /* Premium Top Navigation */
+        .top-nav {
+            position: fixed;
+            right: 40px;
+            top: 40px;
+            z-index: 1000;
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn-circle {
+            width: 50px;
+            height: 50px;
+            background: rgba(10, 10, 10, 0.6);
+            border: 1px solid rgba(229, 169, 61, 0.3);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            position: relative;
+        }
+
+        .nav-btn-circle:hover {
+            transform: translateY(-5px) scale(1.05);
+            background: var(--gold);
+            color: #000;
+            border-color: #fff;
+            box-shadow: 0 0 30px var(--gold-glow);
+        }
+
+        .nav-btn-circle::after {
+            content: attr(data-label);
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: var(--gold);
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: 0.3s;
+            pointer-events: none;
+        }
+
+        .nav-btn-circle:hover::after {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 900px) {
+            .top-nav {
+                right: 20px;
+                top: 20px;
+            }
+            .nav-btn-circle {
+                width: 45px;
+                height: 45px;
+            }
+            .nav-btn-circle::after { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="digital-bg"></div>
+
+    <header>
+        <div class="header-inner-wrap">
+            <a href="index.html" class="logo-box">
+                <div class="logo-txt"><span class="name">FrameZ</span><div class="studio-area"><span class="studio">STUDIO</span><div class="rec-pill"><div class="dot"></div><span class="txt">REC</span></div></div></div>
+                <div class="z-frame-box"><span>Z</span></div>
+            </a>
+            <div class="mobile-toggle" onclick="toggleMobileMenu()">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav-links">
+        <a href="index.html" class="home-dock-btn mini-logo">
+            <div class="z-frame-box"><span>Z</span></div>
+        </a>
+        <a href="studios.html" data-t="studios">STUDIOS</a>
+        <a href="index.html#portfolio" data-t="works">WORKS</a>
+        <a href="packages.html" data-t="tiers">TIERS</a>
+        <a href="faq.html" data-t="faq">FAQ</a>
+        <a href="quotation.html" class="active" data-t="prices">PRICES</a>
+        <a href="index.html#contact" data-t="contact">CONTACT</a>
+        <a href="#" class="lang-switch" onclick="toggleLang(event)"><span data-t="langBtn">EN</span> <i class="fa-solid fa-globe"></i></a>
+    </nav>
+
+    <div class="quotation-wrapper">
+        <div class="price-board" id="priceBoard">
+            <div class="board-header">
+                <div class="logo-area" id="boardLogoArea">
+                    <!-- Standard FrameZ Text Logo -->
+                    <div class="logo-txt" style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-size:2rem; font-weight:900; color:var(--gold); letter-spacing:-1px;">FrameZ</span>
+                        <div style="background:var(--gold); color:#000; padding:2px 8px; font-weight:900; border-radius:3px; font-size:0.7rem;">STUDIO</div>
+                    </div>
+                </div>
+                <div class="board-info">
+                    <strong id="studioNameText" data-t="studioName">FRAME Z STUDIO</strong><br>
+                    <span id="studioSlogan" data-t="cinematicSlogan">Cinematic Content Creation</span><br>
+                    <span id="studioLocation" data-t="locValue">Cairo - United Arab Emirates</span><br>
+                    <span id="studioWebsite">www.framez.studio</span>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-bottom: 35px;">
+                <h2 style="font-weight:900; font-size: 2.2rem; color:var(--gold); text-shadow: 0 0 20px rgba(229,169,61,0.3);">قائمة عروض الأسعار</h2>
+                <div style="background:rgba(255,255,255,0.05); color:#aaa; display:inline-block; padding:6px 20px; border-radius:50px; font-size:0.8rem; font-weight:700; margin-top:10px; border: 1px solid rgba(255,255,255,0.1);">
+                    <i class="fa-solid fa-clapperboard" style="color:var(--gold); margin-left:8px;"></i> <span data-t="digitalBoardTitle">DIGITAL PRODUCTION BOARD</span>
+                </div>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="filter-bar" id="filterBar">
+                <button class="filter-btn active" data-cat="all" onclick="filterCategory('all', this)">
+                    <i class="fa-solid fa-layer-group f-icon"></i> الجميع
+                </button>
+                <button class="filter-btn" data-cat="مونتاج" style="color:#a78bfa; border-color:#a78bfa30;" onclick="filterCategory('مونتاج', this)">
+                    <i class="fa-solid fa-scissors f-icon"></i> مونتاج
+                </button>
+                <button class="filter-btn" data-cat="تصوير" style="color:#60a5fa; border-color:#60a5fa30;" onclick="filterCategory('تصوير', this)">
+                    <i class="fa-solid fa-camera-retro f-icon"></i> تصوير
+                </button>
+                <button class="filter-btn" data-cat="معدات" style="color:#f59e0b; border-color:#f59e0b30;" onclick="filterCategory('معدات', this)">
+                    <i class="fa-solid fa-video f-icon"></i> معدات
+                </button>
+                <button class="filter-btn" data-cat="لوكيشن" style="color:#34d399; border-color:#34d39930;" onclick="filterCategory('لوكيشن', this)">
+                    <i class="fa-solid fa-clapperboard f-icon"></i> لوكيشن
+                </button>
+            </div>
+
+            <div id="priceGroupsGrid" class="price-groups-grid" style="transition: all 0.4s ease;">
+                <!-- Category blocks will be rendered here -->
+            </div>
+
+            <div class="terms-section" id="termsSection" style="display: none;">
+                <div class="terms-title" data-t="termsTitle">الشروط والأحكام</div>
+                <ul class="terms-list"></ul>
+            </div>
+
+            <div class="digital-footer">
+                <h3 style="color:var(--gold); font-weight:900; font-size: 1.4rem;" data-t="boardSummaryLabel">الخلاصة المختصرة</h3>
+                <p id="boardSummary" style="font-size:1rem; color:#aaa; line-height:1.8; margin-top:15px; max-width: 600px; margin-left:auto; margin-right:auto;"></p>
+                <a href="https://wa.me/201117590119" class="book-btn-float dynamic-wa">
+                    <span data-t="bookNowBtn">احجز مـوعدك الآن</span> <i class="fa-brands fa-whatsapp"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="digital-bg"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        const loadPrices = async () => {
+            // Category config
+            const CAT_CONFIG = {
+                'مونتاج': { icon: '<i class="fa-solid fa-scissors"></i>', color: '#a78bfa' },
+                'تصوير':  { icon: '<i class="fa-solid fa-camera-retro"></i>', color: '#60a5fa' },
+                'معدات':  { icon: '<i class="fa-solid fa-video"></i>', color: '#f59e0b' },
+                'لوكيشن': { icon: '<i class="fa-solid fa-clapperboard"></i>', color: '#34d399' }
+            };
+
+            const { data, error } = await supabaseClient.from('price_list').select('*').order('sort_order', { ascending: true });
+            if (error) return;
+
+            const grid = document.getElementById('priceGroupsGrid');
+            if(!grid) return;
+            grid.innerHTML = '';
+            
+            // Group by category
+            const grouped = {};
+            data.forEach(item => {
+                if(!grouped[item.category]) grouped[item.category] = [];
+                grouped[item.category].push(item);
+            });
+
+            // Render Organized Blocks
+            const catOrder = ['مونتاج', 'تصوير', 'معدات', 'لوكيشن'];
+            const orderedKeys = [...catOrder.filter(c => grouped[c]), ...Object.keys(grouped).filter(c => !catOrder.includes(c))];
+            
+            let blockDelay = 200;
+            for (const cat of orderedKeys) {
+                const cfg = CAT_CONFIG[cat] || { icon: '📌', color: 'var(--gold)' };
+                const isImageCat = (cat === 'معدات' || cat === 'لوكيشن');
+
+                setTimeout(() => {
+                    const block = document.createElement('div');
+                    block.className = 'category-block';
+                    block.setAttribute('data-cat', cat);
+                    block.style.cssText = 'opacity:0; transform:translateY(20px); transition:0.8s cubic-bezier(0.16, 1, 0.3, 1); border-color:' + cfg.color + '20;';
+                    
+                    let itemsHtml = grouped[cat].map(item => {
+                        const hasImg = isImageCat && item.image_url;
+                        if(hasImg) {
+                            return `
+                            <div class="price-card">
+                                <img src="${item.image_url}" class="price-card-img" alt="${item.item_name}" onerror="this.src='https://placehold.co/600x337?text=Image+Not+Found'">
+                                <div class="price-card-info">
+                                    <div class="price-card-label">${item.item_name}</div>
+                                    <div class="price-card-val">${item.price}</div>
+                                </div>
+                            </div>`;
+                        }
+                        return `
+                        <div class="price-item">
+                            <div class="item-label">${item.item_name}</div>
+                            <div class="item-price">${item.price}</div>
+                        </div>`;
+                    }).join('');
+
+                    block.innerHTML = `
+                        <div class="cat-tag" style="background:${cfg.color}15; color:${cfg.color}; border-right-color:${cfg.color};">
+                            <span class="cat-icon">${cfg.icon}</span> ${cat}
+                        </div>
+                        <div class="items-list">${itemsHtml}</div>
+                    `;
+                    
+                    grid.appendChild(block);
+                    setTimeout(() => { block.style.opacity = '1'; block.style.transform = 'translateY(0)'; }, 50);
+                }, blockDelay);
+                blockDelay += 200;
+            }
+
+            // Load Settings for Logo/WA
+            const { data: set } = await supabaseClient.from('settings').select('*').limit(1).maybeSingle();
+            if(set) {
+                if(set.whatsapp) {
+                    waNum = set.whatsapp;
+                    document.querySelectorAll('.dynamic-wa').forEach(a => a.href = `https://wa.me/${waNum}`);
+                }
+                if(set.logo_url) {
+                    document.getElementById('boardLogoArea').innerHTML = `<img src="${set.logo_url}" style="height:70px; border-radius:10px;">`;
+                }
+                if(set.name_ar) document.getElementById('studioNameText').innerText = set.name_ar;
+                if(set.slogan) document.getElementById('studioSlogan').innerText = set.slogan;
+                if(set.location) document.getElementById('studioLocation').innerText = set.location;
+                if(set.website) document.getElementById('studioWebsite').innerText = set.website;
+                if(set.board_summary) document.getElementById('boardSummary').innerText = set.board_summary;
+                
+                // Load Dynamic Terms and Conditions
+                if(set.terms_and_conditions) {
+                    const termsSec = document.getElementById('termsSection');
+                    const termsList = document.querySelector('.terms-list');
+                    const lines = set.terms_and_conditions.split('\n').filter(l => l.trim() !== '');
+                    if (lines.length > 0 && termsList && termsSec) {
+                        termsList.innerHTML = lines.map(line => `<li>${line}</li>`).join('');
+                        termsSec.style.display = 'block';
+                    }
+                }
+            }
+        }
+
+        loadPrices();
+
+        // Filter Logic
+        window.filterCategory = (cat, btn) => {
+            // Update active tab
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Filter blocks with animation
+            const blocks = document.querySelectorAll('.category-block');
+            blocks.forEach(block => {
+                const blockCat = block.getAttribute('data-cat');
+                if (cat === 'all' || blockCat === cat) {
+                    block.style.display = '';
+                    // Trigger re-entrance animation
+                    block.style.opacity = '0';
+                    block.style.transform = 'translateY(15px)';
+                    setTimeout(() => {
+                        block.style.opacity = '1';
+                        block.style.transform = 'translateY(0)';
+                    }, 50);
+                } else {
+                    block.style.opacity = '0';
+                    block.style.transform = 'translateY(10px) scale(0.97)';
+                    setTimeout(() => { block.style.display = 'none'; }, 350);
+                }
+            });
+        };
+    </script>
+</body>
+</html>
